@@ -1,4 +1,6 @@
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { CiSearch } from "react-icons/ci";
+import { BsCart2 } from "react-icons/bs";
 
 export default function Header() {
   return (
@@ -9,20 +11,26 @@ export default function Header() {
         <p className="cursor-pointer">Help</p>
       </div>
 
-      <div className="flex items-baseline justify-between gap-5 px-14 py-3">
-        <h1 className="cursor-pointer text-3xl font-bold">ECOMMERCE</h1>
-
-        <div className="flex justify-between gap-5 font-semibold ">
-          <h3 className="cursor-pointer">Categories</h3>
-          <h3 className="cursor-pointer">Sale</h3>
-          <h3 className="cursor-pointer">Clearance</h3>
-          <h3 className="cursor-pointer">New stock</h3>
-          <h3 className="cursor-pointer">Trending</h3>
+      <div className="flex  items-baseline justify-between gap-5 px-14 py-3">
+        <div className="flex-grow basis-full">
+          <h1 className=" cursor-pointer text-3xl font-bold">ECOMMERCE</h1>
         </div>
 
-        <div className="flex justify-between gap-5 ">
-          <h3>Search</h3>
-          <h3>Cart</h3>
+        <div className="flex-grow basis-full">
+          <div className="flex  justify-between gap-5 font-semibold ">
+            <h3 className="cursor-pointer">Categories</h3>
+            <h3 className="cursor-pointer">Sale</h3>
+            <h3 className="cursor-pointer">Clearance</h3>
+            <h3 className="cursor-pointer text-nowrap">New stock</h3>
+            <h3 className="cursor-pointer">Trending</h3>
+          </div>
+        </div>
+
+        <div className="flex-grow basis-full">
+          <div className="flex  justify-end gap-5">
+            <CiSearch size={24} className="cursor-pointer" />
+            <BsCart2 size={24} className="cursor-pointer" />
+          </div>
         </div>
       </div>
 
