@@ -45,9 +45,11 @@ export default function Home() {
             />
           </div>
 
-          <button className="w-full self-center rounded-md bg-black px-5 py-2 tracking-wider text-white">
-            CREATE ACCOUNT
-          </button>
+          <Link href={"/activate-account"} className="w-full self-center">
+            <button className="w-full  rounded-md bg-black px-5 py-2 tracking-wider text-white">
+              CREATE ACCOUNT
+            </button>
+          </Link>
 
           <p className="self-center text-gray-600">
             Have an account?{" "}
