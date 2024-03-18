@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -20,7 +21,7 @@ export default function Home() {
               id="name"
               type="text"
               placeholder="Enter"
-              className="my-1 w-[25vw] rounded-md border border-gray-400 px-2 py-1"
+              className="my-1 w-[35vw] min-w-[25vw] max-w-[80vw] rounded-md border border-gray-400 px-2 py-1"
             />
           </div>
 
@@ -30,7 +31,7 @@ export default function Home() {
               id="email"
               type="email"
               placeholder="Enter"
-              className="my-1 w-[25vw] rounded-md border border-gray-400 px-2 py-1"
+              className="my-1 w-[35vw] min-w-[25vw] max-w-[80vw] rounded-md border border-gray-400 px-2 py-1"
             />
           </div>
 
@@ -40,7 +41,7 @@ export default function Home() {
               id="password"
               type="password"
               placeholder="Enter"
-              className="my-1 w-[25vw] rounded-md border border-gray-400 px-2 py-1"
+              className="my-1 w-[35vw] min-w-[25vw] max-w-[80vw] rounded-md border border-gray-400 px-2 py-1"
             />
           </div>
 
@@ -51,7 +52,7 @@ export default function Home() {
           <p className="self-center text-gray-600">
             Have an account?{" "}
             <span className="mx-1 cursor-pointer font-semibold text-black">
-              LOGIN
+              <Link href={"/login"}>LOGIN</Link>
             </span>
           </p>
         </div>
