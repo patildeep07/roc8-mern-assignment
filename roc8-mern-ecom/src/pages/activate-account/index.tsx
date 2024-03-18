@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
 import React, { useState } from "react";
-import { number } from "zod";
 
 const ActivateAccount = () => {
   const [otp, setOtp] = useState<string[]>(Array(8).fill(""));

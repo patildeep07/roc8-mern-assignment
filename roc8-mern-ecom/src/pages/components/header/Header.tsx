@@ -8,7 +8,7 @@ export default function Header() {
       <div className="flex content-center justify-end gap-5 px-14 py-2 text-sm ">
         <p className="cursor-pointer">Help</p>
         <p className="cursor-pointer">Order & Returns</p>
-        <p className="cursor-pointer">Help</p>
+        <p className="cursor-pointer">Hi, John</p>
       </div>
 
       <div className="flex  items-baseline justify-between gap-5 px-14 py-3">

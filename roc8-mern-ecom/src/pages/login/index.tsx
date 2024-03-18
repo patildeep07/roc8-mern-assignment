@@ -43,9 +43,11 @@ export default function Login() {
             />
           </div>
 
-          <button className="w-full self-center rounded-md bg-black px-5 py-2 tracking-wider text-white">
-            LOGIN
-          </button>
+          <Link href={"/categories"} className="w-full self-center">
+            <button className="w-full self-center rounded-md bg-black px-5 py-2 tracking-wider text-white">
+              LOGIN
+            </button>
+          </Link>
 
           <div className="border-gray-500-900 w-full border"></div>
 
