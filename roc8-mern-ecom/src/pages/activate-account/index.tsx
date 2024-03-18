@@ -28,7 +28,7 @@ const ActivateAccount = () => {
 
   const code = otp.join("");
 
-  //   console.log({ code });
+  console.log({ code });
 
   return (
     <>
