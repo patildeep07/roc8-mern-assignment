@@ -1,4 +1,4 @@
-export const categories = [
+const categories = [
   {
     category_name: "Football",
   },
@@ -174,3 +174,5 @@ export const categories = [
     category_name: "NFL Players",
   },
 ];
+
+export default categories;
