@@ -1,6 +1,6 @@
 import Head from "next/head";
 import React, { useState } from "react";
-import categories from "../components/data";
+import categories from "../../../public/data";
 
 const Index = () => {
   const [page, setPage] = useState(1);
