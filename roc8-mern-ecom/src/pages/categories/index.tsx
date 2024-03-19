@@ -16,6 +16,8 @@ const Index = () => {
     console.log(loggedInUser);
   }
 
+  // Pagination
+
   const [page, setPage] = useState(1);
 
   const categories = api.category.getCategories.useQuery().data;

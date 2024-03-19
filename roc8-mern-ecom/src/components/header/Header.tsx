@@ -5,19 +5,19 @@ import { BsCart2 } from "react-icons/bs";
 export default function Header() {
   return (
     <div>
-      <div className="flex content-center justify-end gap-5 px-14 py-2 text-sm ">
+      <div className="flex content-center justify-center gap-5 px-14 py-2 text-sm sm:justify-end ">
         <p className="cursor-pointer">Help</p>
         <p className="cursor-pointer">Order & Returns</p>
         <p className="cursor-pointer">Hi, John</p>
       </div>
 
-      <div className="flex  flex-wrap items-baseline justify-between gap-5 px-14 py-3">
+      <div className="flex flex-col flex-wrap items-center justify-center gap-5 px-14 py-3 text-center sm:flex-row sm:flex-nowrap sm:items-baseline sm:justify-between sm:text-start">
         <div className="flex-grow basis-full">
-          <h1 className=" cursor-pointer text-3xl font-bold">ECOMMERCE</h1>
+          <h1 className="cursor-pointer  text-3xl font-bold">ECOMMERCE</h1>
         </div>
 
         <div className="flex-grow basis-full">
-          <div className="flex  flex-wrap justify-between gap-5 font-semibold">
+          <div className="flex  flex-wrap justify-center  gap-5 font-semibold sm:flex-nowrap sm:justify-between">
             <h3 className="cursor-pointer">Categories</h3>
             <h3 className="cursor-pointer">Sale</h3>
             <h3 className="cursor-pointer">Clearance</h3>
