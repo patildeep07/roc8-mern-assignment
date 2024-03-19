@@ -3,19 +3,13 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useDataContext } from "~/context/appContext";
 import { api } from "~/utils/api";
 
 export default function Home() {
   const router = useRouter();
-  // const hello = api.user.hello.useQuery({ text: "Deep" }).data?.greeting;
 
-  // const create = api.post.create.useMutation();
-
-  // const createPost = async () => {
-  //   const res = await create.mutateAsync({ name: "Deep" });
-
-  //   console.log(res);
-  // };
+  const { dispatch } = useDataContext();
 
   type UserDetailsType = {
     name: string;
@@ -29,19 +23,24 @@ export default function Home() {
     password: "",
   });
 
-  const accountMutation = api.user.createNewAccount.useMutation();
+  const verificationMutation = api.user.sendOtp.useMutation();
 
   const createNewUser = async () => {
     try {
       const { name, email, password } = userDetails;
+      const min = 10000000;
+      const max = 99999999;
+      const otp = Math.floor(Math.random() * (max - min + 1)) + min;
 
       if ((name.length && email.length && password.length) > 0) {
         console.log({ userDetails });
-        const response = await accountMutation.mutateAsync(userDetails);
+
+        const response = await verificationMutation.mutateAsync({ email, otp });
 
         console.log(response);
 
         if (response) {
+          dispatch({ type: "SET_OTP", payload: { otp, userDetails } });
           await router.replace("/activate-account");
         }
       } else {

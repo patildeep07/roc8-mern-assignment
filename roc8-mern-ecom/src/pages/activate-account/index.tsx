@@ -1,8 +1,13 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useDataContext } from "~/context/appContext";
+import { api } from "~/utils/api";
 
 const ActivateAccount = () => {
+  const router = useRouter();
+
   const [otp, setOtp] = useState<string[]>(Array(8).fill(""));
 
   const handleChange = (index: number, value: string) => {
@@ -26,9 +31,33 @@ const ActivateAccount = () => {
     }
   };
 
-  const code = otp.join("");
+  const accountMutation = api.user.createNewAccount.useMutation();
 
-  console.log({ code });
+  const { state } = useDataContext();
+  const { tempOtp, tempUser } = state;
+
+  console.log({ tempOtp, tempUser });
+
+  const verifyDetails = async () => {
+    try {
+      const code = Number(otp.join(""));
+      if (code == tempOtp) {
+        console.log("Success");
+        const response = await accountMutation.mutateAsync({ ...tempUser });
+
+        if (response) {
+          console.log("Created new account");
+          await router.replace("/login");
+        } else {
+          throw Error("Failed to create account");
+        }
+      } else {
+        console.error("Otp failed to match");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -65,7 +94,10 @@ const ActivateAccount = () => {
           </div>
 
           <Link href={"/login"} className="w-full self-center">
-            <button className="w-full  rounded-md bg-black px-5 py-2 tracking-wider text-white">
+            <button
+              onClick={verifyDetails}
+              className="w-full  rounded-md bg-black px-5 py-2 tracking-wider text-white"
+            >
               Verify
             </button>
           </Link>

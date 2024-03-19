@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import nodemailer from "nodemailer";
 
 export const userRouter = createTRPCRouter({
   hello: publicProcedure
@@ -51,6 +52,43 @@ export const userRouter = createTRPCRouter({
         }
       } catch (error) {
         console.log(error);
+      }
+    }),
+
+  sendOtp: publicProcedure
+    .input(
+      z.object({
+        otp: z.number(),
+        email: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const { otp, email: senderEmail } = input;
+        const password = process.env.NODEMAILER_PASS;
+
+        const transporter = nodemailer.createTransport({
+          service: "Gmail", // Use your email service
+          auth: {
+            user: "patildeep07@gmail.com", // Your email address
+            pass: password, // Your password
+          },
+        });
+
+        const mailOptions = {
+          from: "patildeep07@gmail.com",
+          to: senderEmail,
+          subject: "OTP for verification",
+          html: `
+            <h3>OTP: ${otp}</h3>
+          `,
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        return { status: 200, message: "OTP sent to email" };
+      } catch (error) {
+        console.error(error);
       }
     }),
 });
