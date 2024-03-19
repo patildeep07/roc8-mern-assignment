@@ -1,9 +1,21 @@
 import Head from "next/head";
+import { redirect } from "next/navigation";
 import React, { useState } from "react";
+import { useDataContext } from "~/context/appContext";
 // import categories from "../../../public/data";
 import { api } from "~/utils/api";
 
 const Index = () => {
+  // Redirect if not logged in
+  const { state } = useDataContext();
+  const { loggedInUser } = state;
+
+  if (!loggedInUser) {
+    redirect("/");
+  } else {
+    console.log(loggedInUser);
+  }
+
   const [page, setPage] = useState(1);
 
   const categories = api.category.getCategories.useQuery().data;
@@ -60,7 +72,7 @@ const Index = () => {
           </div>
 
           {/* Pagination */}
-          <div className="flex gap-5 ">
+          <div className="flex flex-wrap gap-5">
             <p>{"<"}</p>
             {paginationNums.map((number) => {
               return (

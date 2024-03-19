@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDataContext } from "~/context/appContext";
@@ -50,8 +49,6 @@ export default function Home() {
       console.log(error);
     }
   };
-
-  const response = api.category.getCategories.useQuery().data;
 
   return (
     <>

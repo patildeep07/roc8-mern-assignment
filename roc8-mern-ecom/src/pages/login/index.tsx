@@ -2,10 +2,12 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useDataContext } from "~/context/appContext";
 import { api } from "~/utils/api";
 
 export default function Login() {
   const router = useRouter();
+  const { dispatch } = useDataContext();
 
   type UserLoginTypes = {
     email: string;
@@ -30,6 +32,10 @@ export default function Login() {
         console.log(response);
 
         if (response) {
+          dispatch({
+            type: "SET_LOGIN",
+            payload: { user: response },
+          });
           await router.replace("/categories");
         }
       } else {

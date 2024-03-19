@@ -11,13 +11,13 @@ export default function Header() {
         <p className="cursor-pointer">Hi, John</p>
       </div>
 
-      <div className="flex  items-baseline justify-between gap-5 px-14 py-3">
+      <div className="flex  flex-wrap items-baseline justify-between gap-5 px-14 py-3">
         <div className="flex-grow basis-full">
           <h1 className=" cursor-pointer text-3xl font-bold">ECOMMERCE</h1>
         </div>
 
         <div className="flex-grow basis-full">
-          <div className="flex  justify-between gap-5 font-semibold ">
+          <div className="flex  flex-wrap justify-between gap-5 font-semibold">
             <h3 className="cursor-pointer">Categories</h3>
             <h3 className="cursor-pointer">Sale</h3>
             <h3 className="cursor-pointer">Clearance</h3>

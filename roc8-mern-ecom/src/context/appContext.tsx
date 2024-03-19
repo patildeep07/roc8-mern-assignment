@@ -7,8 +7,8 @@ const initialState: DataContextType = {
     email: "",
     password: "",
     categoriesLiked: [],
-    createdAt: "",
-    updatedAt: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   tempOtp: 0,
   tempUser: {
@@ -28,8 +28,8 @@ type UserDetails = {
   email: string;
   password: string;
   categoriesLiked: string[];
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 type TempUserDetails = {
@@ -57,30 +57,45 @@ export const DataContext = createContext<{
   dispatch: () => null,
 });
 
-type ActionType = "SET_OTP";
+type ActionType = "SET_OTP" | "SET_LOGIN";
 
 type TempDetailsType = {
   otp: number;
-  userDetails: TempUserDetails;
+  userDetails: TempUserDetails | UserDetails;
 };
+
+type LoginDetailsType = {
+  user: UserDetails;
+};
+
+type ActionPayload = TempDetailsType | LoginDetailsType;
 
 interface ActionKind {
   type: ActionType;
-  payload: TempDetailsType;
+  payload: ActionPayload;
 }
 
 const reducerFunction = (
   state: DataContextType,
   action: ActionKind,
 ): DataContextType => {
-  console.log({ state, action });
   switch (action.type) {
     case "SET_OTP":
-      return {
-        ...state,
-        tempOtp: action.payload.otp,
-        tempUser: action.payload.userDetails,
-      };
+      if ("otp" in action.payload) {
+        return {
+          ...state,
+          tempOtp: action.payload.otp,
+          tempUser: action.payload.userDetails,
+        };
+      }
+
+    case "SET_LOGIN":
+      if ("user" in action.payload) {
+        return {
+          ...state,
+          loggedInUser: action.payload.user,
+        };
+      }
 
     default:
       return state;
