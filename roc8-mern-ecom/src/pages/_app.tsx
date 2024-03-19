@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 import Header from "~/components/header/Header";
+import { AppProvider } from "~/context/appContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -12,10 +13,12 @@ const inter = Inter({
 });
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <main className={`font-sans ${inter.variable}`}>
-      <Header />
-      <Component {...pageProps} />
-    </main>
+    <AppProvider>
+      <main className={`font-sans ${inter.variable}`}>
+        <Header />
+        <Component {...pageProps} />
+      </main>
+    </AppProvider>
   );
 };
 
