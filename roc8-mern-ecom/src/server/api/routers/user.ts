@@ -91,4 +91,30 @@ export const userRouter = createTRPCRouter({
         console.error(error);
       }
     }),
+
+  updateCategoriesLiked: publicProcedure
+    .input(z.object({ category: z.string(), id: z.number(), type: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { category, id, type } = input;
+
+      const foundUser = await ctx.db.user.findFirst({
+        where: { id },
+      });
+
+      if (!foundUser) {
+        throw new Error("User not found");
+      }
+
+      const updatedCategoriesLiked =
+        type === "Add"
+          ? [...foundUser.categoriesLiked, category]
+          : foundUser.categoriesLiked.filter((name) => name !== category);
+
+      return await ctx.db.user.update({
+        where: { id },
+        data: {
+          categoriesLiked: updatedCategoriesLiked,
+        },
+      });
+    }),
 });

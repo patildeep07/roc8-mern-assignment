@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
+import { act } from "react-dom/test-utils";
 
 const initialState: DataContextType = {
   loggedInUser: {
@@ -57,7 +58,7 @@ export const DataContext = createContext<{
   dispatch: () => null,
 });
 
-type ActionType = "SET_OTP" | "SET_LOGIN";
+type ActionType = "SET_OTP" | "SET_LOGIN" | "SET_CATEGORY";
 
 type TempDetailsType = {
   otp: number;
@@ -68,7 +69,12 @@ type LoginDetailsType = {
   user: UserDetails;
 };
 
-type ActionPayload = TempDetailsType | LoginDetailsType;
+type CategoryDetailsType = {
+  category: string;
+  type: "Add" | "Filter";
+};
+
+type ActionPayload = TempDetailsType | LoginDetailsType | CategoryDetailsType;
 
 interface ActionKind {
   type: ActionType;
@@ -94,6 +100,26 @@ const reducerFunction = (
         return {
           ...state,
           loggedInUser: action.payload.user,
+        };
+      }
+
+    case "SET_CATEGORY":
+      if ("category" in action.payload) {
+        const user = state.loggedInUser;
+
+        const { category } = action.payload;
+
+        const updatedCategoriesLiked =
+          action.payload.type === "Add"
+            ? [...user.categoriesLiked, category]
+            : user.categoriesLiked.filter((name) => name !== category);
+
+        return {
+          ...state,
+          loggedInUser: {
+            ...state.loggedInUser,
+            categoriesLiked: updatedCategoriesLiked,
+          },
         };
       }
 

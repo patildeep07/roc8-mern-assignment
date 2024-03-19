@@ -1,7 +1,4 @@
-"use client";
-
 import Head from "next/head";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDataContext } from "~/context/appContext";
@@ -12,10 +9,12 @@ const Index = () => {
   // Redirect if not logged in
   const router = useRouter();
 
+  const { dispatch } = useDataContext();
+
   const { state } = useDataContext();
   const { loggedInUser } = state;
 
-  console.log(loggedInUser);
+  // console.log({ loggedInUser });
 
   useEffect(() => {
     if (loggedInUser.id == 0) {
@@ -28,6 +27,38 @@ const Index = () => {
   // Categories selected
 
   const { categoriesLiked } = loggedInUser;
+
+  const updateCategoryMutation = api.user.updateCategoriesLiked.useMutation();
+
+  const categoryHandler = async (value: string) => {
+    try {
+      if (!categoriesLiked.includes(value)) {
+        dispatch({
+          type: "SET_CATEGORY",
+          payload: { category: value, type: "Add" },
+        });
+
+        const response = await updateCategoryMutation.mutateAsync({
+          category: value,
+          id: loggedInUser.id,
+          type: "Add",
+        });
+      } else {
+        dispatch({
+          type: "SET_CATEGORY",
+          payload: { category: value, type: "Filter" },
+        });
+
+        const response = await updateCategoryMutation.mutateAsync({
+          category: value,
+          id: loggedInUser.id,
+          type: "Filter",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Pagination
 
@@ -74,6 +105,8 @@ const Index = () => {
               return (
                 <div key={category} className="flex  gap-2">
                   <input
+                    onChange={(e) => categoryHandler(e.target.value)}
+                    value={category}
                     defaultChecked={
                       categoriesLiked.some((name) => name === category)
                         ? true
