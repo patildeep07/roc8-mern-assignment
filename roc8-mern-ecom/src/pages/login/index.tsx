@@ -1,7 +1,50 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { api } from "~/utils/api";
 
 export default function Login() {
+  const router = useRouter();
+
+  type UserLoginTypes = {
+    email: string;
+    password: string;
+  };
+
+  const [userDetails, setUserDetails] = useState<UserLoginTypes>({
+    email: "",
+    password: "",
+  });
+
+  const loginMutation = api.user.userLogin.useMutation();
+
+  const loginHandler = async () => {
+    try {
+      const { email, password } = userDetails;
+
+      if (email.length && password.length > 0) {
+        console.log({ userDetails });
+        const response = await loginMutation.mutateAsync(userDetails);
+
+        console.log(response);
+
+        if (response) {
+          await router.replace("/categories");
+        }
+      } else {
+        console.error("Fill all fields");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // const loginQuery = api.user.userLogin.useQuery({
+  //   email: "patildeep@gmail.com",
+  //   password: "123",
+  // }).data;
+
   return (
     <>
       <Head>
@@ -29,6 +72,9 @@ export default function Login() {
               id="email"
               type="email"
               placeholder="Enter"
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, email: e.target.value })
+              }
               className="my-1 w-[35vw] min-w-[25vw] max-w-[80vw] rounded-md border border-gray-400 px-2 py-1"
             />
           </div>
@@ -39,15 +85,19 @@ export default function Login() {
               id="password"
               type="password"
               placeholder="Enter"
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, password: e.target.value })
+              }
               className="my-1 w-[35vw] min-w-[25vw] max-w-[80vw] rounded-md border border-gray-400 px-2 py-1"
             />
           </div>
 
-          <Link href={"/categories"} className="w-full self-center">
-            <button className="w-full self-center rounded-md bg-black px-5 py-2 tracking-wider text-white">
-              LOGIN
-            </button>
-          </Link>
+          <button
+            onClick={loginHandler}
+            className="w-full self-center rounded-md bg-black px-5 py-2 tracking-wider text-white"
+          >
+            LOGIN
+          </button>
 
           <div className="border-gray-500-900 w-full border"></div>
 

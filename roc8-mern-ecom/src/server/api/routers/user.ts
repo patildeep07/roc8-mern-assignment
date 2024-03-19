@@ -19,4 +19,38 @@ export const userRouter = createTRPCRouter({
         data: input,
       });
     }),
+
+  userLogin: publicProcedure
+    .input(
+      z.object({
+        email: z.string(),
+        password: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const { email, password } = input;
+
+        const userFound = await ctx.db.user.findFirst({
+          where: {
+            email: email,
+          },
+        });
+
+        if (userFound) {
+          const passwordMatch = userFound.password === password;
+
+          if (passwordMatch) {
+            console.log("Logged in");
+            return userFound;
+          } else {
+            console.log("Incorrect password");
+          }
+        } else {
+          console.error("Username doesnt exists");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }),
 });
