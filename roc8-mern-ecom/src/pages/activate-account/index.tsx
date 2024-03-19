@@ -36,7 +36,12 @@ const ActivateAccount = () => {
   const { state } = useDataContext();
   const { tempOtp, tempUser } = state;
 
-  console.log({ tempOtp, tempUser });
+  const { email } = tempUser;
+
+  const indexOfAtTheRate = email.indexOf("@");
+
+  const displayMail =
+    email.slice(0, 3) + "*****" + email.slice(indexOfAtTheRate);
 
   const verifyDetails = async () => {
     try {
@@ -70,10 +75,12 @@ const ActivateAccount = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className="mx-auto my-10 flex  max-w-fit flex-col items-start justify-start gap-7 rounded-lg border border-gray-400 px-10 py-7">
+        <div className="mx-auto my-10 flex w-fit flex-col items-start justify-start gap-7 rounded-lg border border-gray-400 px-10 py-7 sm:max-w-[50%]">
           <h1 className="self-center text-2xl font-bold">Verify your email</h1>
 
-          <p>Enter the 8 digit code you have received on your email</p>
+          <p>
+            Enter the 8 digit code you have received on your email {displayMail}
+          </p>
 
           <div>
             <p>Code</p>
