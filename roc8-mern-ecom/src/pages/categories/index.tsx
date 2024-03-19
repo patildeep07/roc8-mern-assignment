@@ -1,20 +1,33 @@
+"use client";
+
 import Head from "next/head";
 import { redirect } from "next/navigation";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { useDataContext } from "~/context/appContext";
 // import categories from "../../../public/data";
 import { api } from "~/utils/api";
 
 const Index = () => {
   // Redirect if not logged in
+  const router = useRouter();
+
   const { state } = useDataContext();
   const { loggedInUser } = state;
 
-  if (!loggedInUser) {
-    redirect("/");
-  } else {
-    console.log(loggedInUser);
-  }
+  console.log(loggedInUser);
+
+  useEffect(() => {
+    if (loggedInUser.id == 0) {
+      router.push("/").catch(console.error);
+    } else {
+      router.push("/categories").catch(console.error);
+    }
+  }, []);
+
+  // Categories selected
+
+  const { categoriesLiked } = loggedInUser;
 
   // Pagination
 
@@ -61,6 +74,11 @@ const Index = () => {
               return (
                 <div key={category} className="flex  gap-2">
                   <input
+                    defaultChecked={
+                      categoriesLiked.some((name) => name === category)
+                        ? true
+                        : false
+                    }
                     className="cursor-pointer"
                     type="checkbox"
                     id={category}
