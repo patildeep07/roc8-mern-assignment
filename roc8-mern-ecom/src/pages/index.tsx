@@ -51,6 +51,8 @@ export default function Home() {
     }
   };
 
+  const response = api.category.getCategories.useQuery().data;
+
   return (
     <>
       <Head>

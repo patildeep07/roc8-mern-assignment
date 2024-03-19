@@ -1,20 +1,23 @@
 import Head from "next/head";
 import React, { useState } from "react";
-import categories from "../../../public/data";
+// import categories from "../../../public/data";
+import { api } from "~/utils/api";
 
 const Index = () => {
   const [page, setPage] = useState(1);
 
+  const categories = api.category.getCategories.useQuery().data;
+
   const displayCategoriesNumber = 6;
   const lastCategoryIndex = displayCategoriesNumber * page;
   const firstCategoryIndex = lastCategoryIndex - displayCategoriesNumber;
-  const totalPages = (categories.length / displayCategoriesNumber).toFixed(0);
+  const totalPages = (100 / displayCategoriesNumber).toFixed(0);
 
   const paginationNums = Array(Number(totalPages))
     .fill(1)
     .map((elem: number, idx: number): number => elem + idx);
 
-  const displayCategories = categories.slice(
+  const displayCategories = categories?.slice(
     firstCategoryIndex,
     lastCategoryIndex,
   );
@@ -42,9 +45,15 @@ const Index = () => {
           <div>
             {displayCategories?.map(({ category_name: category }) => {
               return (
-                <div key={category}>
-                  <input type="checkbox" id={category} />
-                  <label htmlFor={category}>{category}</label>
+                <div key={category} className="flex  gap-2">
+                  <input
+                    className="cursor-pointer"
+                    type="checkbox"
+                    id={category}
+                  />
+                  <label className="cursor-pointer" htmlFor={category}>
+                    {category}
+                  </label>
                 </div>
               );
             })}
