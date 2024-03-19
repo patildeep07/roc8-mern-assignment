@@ -1,7 +1,57 @@
 import Head from "next/head";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { api } from "~/utils/api";
 
 export default function Home() {
+  const router = useRouter();
+  // const hello = api.user.hello.useQuery({ text: "Deep" }).data?.greeting;
+
+  // const create = api.post.create.useMutation();
+
+  // const createPost = async () => {
+  //   const res = await create.mutateAsync({ name: "Deep" });
+
+  //   console.log(res);
+  // };
+
+  type UserDetailsType = {
+    name: string;
+    email: string;
+    password: string;
+  };
+
+  const [userDetails, setUserDetails] = useState<UserDetailsType>({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const accountMutation = api.user.createNewAccount.useMutation();
+
+  const createNewUser = async () => {
+    try {
+      const { name, email, password } = userDetails;
+
+      if ((name.length && email.length && password.length) > 0) {
+        console.log({ userDetails });
+        const response = await accountMutation.mutateAsync(userDetails);
+
+        console.log(response);
+
+        if (response) {
+          await router.replace("/activate-account");
+        }
+      } else {
+        console.error("Fill all details");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -21,6 +71,9 @@ export default function Home() {
               id="name"
               type="text"
               placeholder="Enter"
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, name: e.target.value })
+              }
               className="my-1 w-[35vw] min-w-[25vw] max-w-[80vw] rounded-md border border-gray-400 px-2 py-1"
             />
           </div>
@@ -31,6 +84,9 @@ export default function Home() {
               id="email"
               type="email"
               placeholder="Enter"
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, email: e.target.value })
+              }
               className="my-1 w-[35vw] min-w-[25vw] max-w-[80vw] rounded-md border border-gray-400 px-2 py-1"
             />
           </div>
@@ -41,15 +97,19 @@ export default function Home() {
               id="password"
               type="password"
               placeholder="Enter"
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, password: e.target.value })
+              }
               className="my-1 w-[35vw] min-w-[25vw] max-w-[80vw] rounded-md border border-gray-400 px-2 py-1"
             />
           </div>
 
-          <Link href={"/activate-account"} className="w-full self-center">
-            <button className="w-full  rounded-md bg-black px-5 py-2 tracking-wider text-white">
-              CREATE ACCOUNT
-            </button>
-          </Link>
+          <button
+            onClick={createNewUser}
+            className="w-full  self-center rounded-md bg-black px-5 py-2 tracking-wider text-white"
+          >
+            CREATE ACCOUNT
+          </button>
 
           <p className="self-center text-gray-600">
             Have an account?{" "}
