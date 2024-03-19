@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { useDataContext } from "~/context/appContext";
 import { api } from "~/utils/api";
 
@@ -51,13 +52,14 @@ const ActivateAccount = () => {
         const response = await accountMutation.mutateAsync({ ...tempUser });
 
         if (response) {
-          console.log("Created new account");
+          toast.success("Created new account");
           await router.replace("/login");
         } else {
+          toast.error("Failed to create account");
           throw Error("Failed to create account");
         }
       } else {
-        console.error("Otp failed to match");
+        toast.error("Otp failed to match");
       }
     } catch (error) {
       console.error(error);

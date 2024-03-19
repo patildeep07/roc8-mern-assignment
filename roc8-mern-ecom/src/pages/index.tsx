@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useDataContext } from "~/context/appContext";
 import { api } from "~/utils/api";
 
@@ -36,14 +37,13 @@ export default function Home() {
 
         const response = await verificationMutation.mutateAsync({ email, otp });
 
-        console.log(response);
-
         if (response) {
           dispatch({ type: "SET_OTP", payload: { otp, userDetails } });
+          toast.success("Otp sent on mail");
           await router.replace("/activate-account");
         }
       } else {
-        console.error("Fill all details");
+        toast.error("Fill all details");
       }
     } catch (error) {
       console.log(error);

@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useDataContext } from "~/context/appContext";
 import { api } from "~/utils/api";
 
@@ -29,17 +30,18 @@ export default function Login() {
         console.log({ userDetails });
         const response = await loginMutation.mutateAsync(userDetails);
 
-        console.log(response);
-
         if (response) {
           dispatch({
             type: "SET_LOGIN",
             payload: { user: response },
           });
+
+          toast.success("User logged in");
+
           await router.replace("/categories");
         }
       } else {
-        console.error("Fill all fields");
+        toast.error("Fill all fields");
       }
     } catch (error) {
       console.error(error);
