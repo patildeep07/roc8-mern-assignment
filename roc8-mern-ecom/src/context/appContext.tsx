@@ -74,7 +74,16 @@ type CategoryDetailsType = {
   type: "Add" | "Filter";
 };
 
-type ActionPayload = TempDetailsType | LoginDetailsType | CategoryDetailsType;
+type RequestFailedType = {
+  status: number;
+  message: string;
+};
+
+type ActionPayload =
+  | TempDetailsType
+  | LoginDetailsType
+  | CategoryDetailsType
+  | RequestFailedType;
 
 interface ActionKind {
   type: ActionType;

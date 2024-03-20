@@ -27,18 +27,20 @@ export default function Login() {
       const { email, password } = userDetails;
 
       if (email.length && password.length > 0) {
-        console.log({ userDetails });
         const response = await loginMutation.mutateAsync(userDetails);
 
-        if (response) {
+        if (response?.status === 200 && response.userFound) {
+          const { userFound } = response;
           dispatch({
             type: "SET_LOGIN",
-            payload: { user: response },
+            payload: { user: userFound },
           });
 
           toast.success("User logged in");
 
           await router.replace("/categories");
+        } else {
+          toast.error(response?.message);
         }
       } else {
         toast.error("Fill all fields");

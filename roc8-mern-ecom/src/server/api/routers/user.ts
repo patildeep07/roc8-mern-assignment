@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import nodemailer from "nodemailer";
+import { toast } from "react-toastify";
 
 export const userRouter = createTRPCRouter({
   hello: publicProcedure
@@ -42,13 +43,19 @@ export const userRouter = createTRPCRouter({
           const passwordMatch = userFound.password === password;
 
           if (passwordMatch) {
-            console.log("Logged in");
-            return userFound;
+            toast.success("Logged in");
+            return { status: 200, userFound };
           } else {
-            console.log("Incorrect password");
+            return {
+              status: 400,
+              message: "Incorrect password",
+            };
           }
         } else {
-          console.error("Username doesnt exists");
+          return {
+            status: 404,
+            message: "Username doesnt exists",
+          };
         }
       } catch (error) {
         console.log(error);
