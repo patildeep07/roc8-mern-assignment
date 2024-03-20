@@ -69,9 +69,20 @@ export const userRouter = createTRPCRouter({
         email: z.string(),
       }),
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
       try {
         const { otp, email: senderEmail } = input;
+
+        const userFound = await ctx.db.user.findFirst({
+          where: {
+            email: senderEmail,
+          },
+        });
+
+        if (userFound) {
+          return { status: 400, message: "Email already exists in database" };
+        }
+
         const password = process.env.NODEMAILER_PASS;
 
         const transporter = nodemailer.createTransport({

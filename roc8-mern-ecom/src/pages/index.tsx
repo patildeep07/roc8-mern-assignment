@@ -33,14 +33,14 @@ export default function Home() {
       const otp = Math.floor(Math.random() * (max - min + 1)) + min;
 
       if ((name.length && email.length && password.length) > 0) {
-        console.log({ userDetails });
-
         const response = await verificationMutation.mutateAsync({ email, otp });
 
-        if (response) {
+        if (response?.status === 200) {
           dispatch({ type: "SET_OTP", payload: { otp, userDetails } });
           toast.success("Otp sent on mail");
           await router.replace("/activate-account");
+        } else {
+          toast.error(response?.message);
         }
       } else {
         toast.error("Fill all details");
